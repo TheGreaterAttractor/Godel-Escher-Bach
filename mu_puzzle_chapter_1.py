@@ -7,8 +7,7 @@
 # RULE IV: If UU occurs inside one of your strings, you can drop it. 
 
 # attempt
-from random import randrange, choice
-from random  import choice as choose
+from random import randrange, choice as choose
 
 class Formalism:
     axiom = 'MI'
@@ -92,8 +91,7 @@ class Formalism:
             #the string 'MIU' is particularly problematic because beyond it only rule 2 is applicable till infinity
             #so i avoid it
             while result == 'MIU':
-                choice = randrange(0,len(rules))
-                result = rules[choice](self.theorems[i])
+                result = choose(rules)(self.theorems[i])
             self.theorems.append(result)
 
 
