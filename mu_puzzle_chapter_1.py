@@ -7,7 +7,8 @@
 # RULE IV: If UU occurs inside one of your strings, you can drop it. 
 
 # attempt
-from random import randrange, choice as choose
+from random import randrange, choice 
+
 
 class Formalism:
     axiom = 'MI'
@@ -33,6 +34,10 @@ class Formalism:
     @staticmethod
     def double_U_occurs_in(s):
         return True if s.find('UU') > 0 else False
+    @staticmethod
+    def choose(d):
+        key = choice(list(d.keys()))
+        return d[key]
     
     #---------------
     #rule methods
@@ -51,25 +56,26 @@ class Formalism:
     @staticmethod
     def drop_double_U(s):
         return s.replace('UU','',1)
+    
 
     # method to determine the applicable rules given a string (theorem)
     def applicable_rules(self,s):
-        rules = []
+        rules = {}
         if self.last_char_of(s,'I'):
             #rule 1 is applicable
-            rules.append(self.append_U)
+            rules['append_U'] = self.append_U
 
         if self.is_Mx(s):
             #rule 2 is applicable
-            rules.append(self.duplicate_suffix)
+            rules['duplicate_suffix'] = self.duplicate_suffix
 
         if self.triple_I_occurs_in(s):
             #rule 3 is applicable
-            rules.append(self.replace_triple_I_with_U)
+            rules['replace_triple_I_with_U'] = self.replace_triple_I_with_U
 
         if self.double_U_occurs_in(s):
             #rule 4 is applicable
-            rules.append(self.drop_double_U)
+            rules['drop_double_U'] = self.drop_double_U
         return rules
 
     def __repr__(self):
@@ -86,12 +92,12 @@ class Formalism:
             rules = self.applicable_rules(self.theorems[i])
 
             #choose a rule at random and apply
-            result = choose(rules)(self.theorems[i])
+            result = self.choose(rules)(self.theorems[i])
 
             #the string 'MIU' is particularly problematic because beyond it only rule 2 is applicable till infinity
             #so i avoid it
             while result == 'MIU':
-                result = choose(rules)(self.theorems[i])
+                result = self.choose(rules)(self.theorems[i])
             self.theorems.append(result)
 
 
